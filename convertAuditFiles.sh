@@ -2,6 +2,11 @@
 
 DIR=$1
 
+if [ -z "$DIR" ]; then
+   echo "Pass as a parameter the folder of the mprv files"
+   exit 0
+fi
+
 echo "Directory parameter is: $DIR"
 
 chmod +x ./eventCrcConvertor.x
