@@ -11,34 +11,34 @@ if [  -n "${FILENAME}" ]; then
 
       NAME=$(basename $1)
     
-      echo "Intento procesar a $FILENAME"
+      echo "processbackup.sh: Trying to rpocess $FILENAME"
       
-      if [ ! -d temp ]; then
-        echo "Creo la carpeta $NAME-dir"
+      if [ ! -d $NAME-dir ]; then
+        echo "processbackup.sh: Creating folder $NAME-dir"
         mkdir $NAME-dir
       else
-        echo "Borro lo que exista en $NAME-dir"
+        echo "processbackup.sh: Deleting folder $NAME-dir"
         rm -rf $NAME-dir/*
       fi
       
-      echo "Copio a tmp al archivo $NAME"
+      echo "processbackup.sh: Copying to ./tmp file $NAME"
       cp $FILENAME ./temp/
       
-      echo "Ejecuto el packagertool.jar"
+      echo "processbackup.sh: Executing packagertool.jar"
       java -jar packagertool.jar -unpack -source temp/$NAME -target $NAME-dir/
       
-      echo "Ahora ejecuto el convertAuditFiles"
+      echo "processbackup.sh: Now running convertAuditFiles.sh"
       
       ./convertAuditFiles.sh $NAME-dir
       
-      echo "Ahora ejecuto el joinfiles.rb"
+      echo "processbackup.sh: Now running joinfiles.rb"
       
       ruby joinfiles.rb $NAME-dir/ 1>/tmp/$NAME.log & #lo hago en background, tendria que redirigir el output
       
       rm temp/$NAME* 2>/dev/null
     else
-      echo "El archivo no existe!"
+      echo "processbackup.sh: The file $FILENAME does not exist!"
     fi
 else
-  echo "Se debe enviar un archivo como parametro"
+  echo "You must send a file as an argument"
 fi
