@@ -2,7 +2,7 @@
 
 for f in `ls impervafiles`; do
   echo "processbackup.sh: Proceso a -> $f"
-  FILENAME=$f
+  FILENAME="impervafiles/$f"
   
   if [ ! -d temp ]; then
     mkdir temp
