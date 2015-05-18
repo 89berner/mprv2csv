@@ -33,7 +33,7 @@ if [  -n "${FILENAME}" ]; then
       
       echo "processbackup.sh: Now running joinfiles.rb"
       
-      ruby joinfiles.rb $NAME-dir/ 1>/tmp/$NAME.log & #lo hago en background, tendria que redirigir el output
+      ruby joinfiles.rb $NAME-dir/
       
       rm temp/$NAME* 2>/dev/null
     else
