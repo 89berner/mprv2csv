@@ -110,7 +110,7 @@ numbers.each do |num|
   
   puts "Creating file processed/processed#{name}.csv ..."
   
-  name = directorio.split("-dir")[0]
+  name = directory.split("-dir")[0]
   
   counting = 0
   FasterCSV.open("processed/processed#{name}.csv", "a") do |csv|
