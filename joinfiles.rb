@@ -34,8 +34,7 @@ puts try
 numbers.each do |num|
   key2event = Hash.new #Hash.new
   
-  puts "Proceso a la posicion #{num}"
-  puts "Cargo eventos de #{num.to_s}.crc2event.csv"
+  puts "Loading events from #{num.to_s}.crc2event.csv"
   countz = 0
   FasterCSV.foreach("#{directory}/converted_data/#{num.to_s}.crc2event.csv") do |line|
         key = line[1]
@@ -57,7 +56,7 @@ numbers.each do |num|
     puts "Loaded #{cantidad} elements"
 
   keys = Array.new
-  puts "Ahora cargo las conexiones del archivo #{num.to_s}.crc2key.csv"
+  puts "Loading connections from #{num.to_s}.crc2key.csv"
   CSV.foreach("#{directory}/converted_data/#{num.to_s}.crc2key.csv") do |line|
       keys.push(line)
   end
@@ -65,7 +64,6 @@ numbers.each do |num|
   
   eventos = GoogleHashDenseRubyToRuby.new #Hash.new
   
-  puts "GENERO UN HASH DE EVENTOS, CON KEY ES EL ID DEL EVENTO"
   count = 0
   puts "Now loading the events of file #{num.to_s}.events.csv"
   CSV.foreach("#{directory}/converted_data/#{num.to_s}.events.csv") do |line|
@@ -74,7 +72,7 @@ numbers.each do |num|
       count = count + 1
       eventos[evento] = line
     rescue
-      puts "ERROR CON #{line[1]}"
+      puts "ERROR WITH #{line[1]}"
     end
   end
   puts "Now loading the events of file #{num.to_s}.events2.csv"
@@ -90,24 +88,6 @@ numbers.each do |num|
   end
   puts "Loaded #{eventos.length} elements"  
 
-  puts "Hago un ejemplo: Agarro el primer elemento de keys"
-
-  keys.each do |key|
-    keyid = key[0]
-    puts "Keyid es #{keyid}"
-    eventid = key2event[keyid]
-    #pp key2event
-    if eventid != nil
-      puts "El primer elemento es #{keyid}"
-      puts "Relaciono la conex con #{eventid.length} eventos"
-      eventid.each do |event|
-        eventmsg = eventos[event]
-      #  puts "Encuentro el evento #{event} con mensaje #{eventmsg}"
-      end
-      break
-    end
-  end
-  
   puts "Creating file processed/processed#{name}.csv ..."
   
   name = directory.split("-dir")[0]
@@ -125,7 +105,6 @@ numbers.each do |num|
         rescue
           puts "Error with key"
           pp key
-          $stdin.gets.chomp()
         end
         begin
           ev.map!{ |element| element.gsub("\n","") if element != nil }
@@ -135,7 +114,7 @@ numbers.each do |num|
         end
         
         if counting % 10000 == 0
-          puts "Veo a #{counting} con key:"
+          puts "Processing #{counting}"
         end
         csv << key + ev
       end
