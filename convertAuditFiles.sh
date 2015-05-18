@@ -3,26 +3,26 @@
 DIR=$1
 
 if [ -z "$DIR" ]; then
-   echo "Pass as a parameter the folder of the mprv files"
+   echo "convertAuditFiles.sh: Pass as a parameter the folder of the mprv files"
    exit 0
 fi
 
-echo "Directory parameter is: $DIR"
+echo "convertAuditFiles.sh: Directory parameter is: $DIR"
 
 chmod +x ./eventCrcConvertor.x
 
 in_files=$( find $DIR/ | egrep "\.crc2event$" | sort )
 
 for in_file in ${in_files}; do
-	echo "PROCESSING ${in_file}"
+	echo "convertAuditFiles.sh: PROCESSING ${in_file}"
 	./eventCrcConvertor.x ${in_file} ${in_file}.csv >& /dev/null
 	if [ $? -ne 0 ]; then
-		echo "Failed."
+		echo "convertAuditFiles.sh: Failed."
 		exit 1	
 	fi
 done
 
-echo "Now Processing each file"
+echo "convertAuditFiles.sh: Now Processing each file"
 
 file_index=1
 
@@ -30,7 +30,7 @@ in_files=$( find ./$DIR | egrep "\.crc2event$" | rev | cut -d "/" -f 1 |cut -d '
 
 mkdir -p ./$DIR/converted_data
 for in_file in ${in_files}; do
-	echo "Moving ${in_file} in number ${file_index}"
+	echo "convertAuditFiles.sh: Moving ${in_file} in number ${file_index}"
 	mv ./$DIR/${in_file}.csv ./$DIR/converted_data/${file_index}.events.csv >& /dev/null
 	mv ./$DIR/${in_file}.csv_ ./$DIR/converted_data/${file_index}.events2.csv >& /dev/null
 	mv ./$DIR/${in_file}.crc2event.csv ./$DIR/converted_data/${file_index}.crc2event.csv
@@ -40,9 +40,9 @@ for in_file in ${in_files}; do
 	file_index=$((++file_index))
 done
 
-echo "Removing created files"
+echo "convertAuditFiles.sh: Removing created files"
 
 rm -f ./$DIR/*000000*
 
 
-echo "Finished processing $DIR."
+echo "convertAuditFiles.sh: Finished processing $DIR."
