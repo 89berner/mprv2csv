@@ -6,6 +6,10 @@ if [ ! -d temp ]; then
   mkdir temp
 fi
 
+if [ ! -d processed ]; then
+  mkdir processed
+fi
+
 if [  -n "${FILENAME}" ]; then
   if [ -f $FILENAME ]; then
 
