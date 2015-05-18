@@ -1,7 +1,7 @@
 #!/bin/bash
 
 for f in `ls impervafiles`; do
-  echo "processbackup.sh: Proceso a -> $f"
+  echo "processbackup.sh: Processing -> $f"
   FILENAME="impervafiles/$f"
   
   if [ ! -d temp ]; then
